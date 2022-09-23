@@ -1,0 +1,17 @@
+{
+    "name": "shieldforce/frame-sf",
+    "autoload": {
+        "psr-4": {
+            "Shieldforce\\FrameSf\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexandre Ferreira",
+            "email": "shieldforce2@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}
