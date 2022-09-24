@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Shieldforce\FrameSf\Log;
 
+use Monolog\Handler\BrowserConsoleHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
+use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
 
 class StartSingletonLogger
 {
@@ -14,6 +18,7 @@ class StartSingletonLogger
 
     private function __construct()
     {
+        $this->setLogger();
     }
 
     private function __clone()
@@ -33,8 +38,11 @@ class StartSingletonLogger
         return self::$instance;
     }
 
-    public function setLogger(Logger $logger)
+    public function setLogger()
     {
+        $logger = new Logger(ChannelsLogsEnum::LogBootSystem->value);
+        $logger->pushHandler(new BrowserConsoleHandler(Level::Debug));
+        $logger->pushHandler(new StreamHandler("../logs/frame-sf/logs.txt", Level::Warning));
         $this->logger = $logger;
     }
 

@@ -1,32 +1,18 @@
 <?php
 
-use App\Enums\ChannelsLogsEnum;
-use App\Services\Log\LogCustomImplement;
+declare(strict_types=1);
+
 use Dotenv\Dotenv;
-use Monolog\Handler\BrowserConsoleHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
-use Monolog\Logger;
 use Shieldforce\FrameSf\BootSystem;
+use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
+use Shieldforce\FrameSf\Log\LogCustomImplement;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+ini_set('error_reporting', E_ALL);
 error_reporting(E_ALL);
 
 require "../vendor/autoload.php";
-
-/**
- * Startando logger pela primeira vez
- */
-$logger = new Logger(ChannelsLogsEnum::LogBootSystem->value);
-$logger->pushHandler(new BrowserConsoleHandler(Level::Debug));
-$logger->pushHandler(new StreamHandler("../logs/frame-sf/logs.txt", Level::Warning));
-
-/**
- * Garantindo que Logger será singleton
- */
-$instance = \Shieldforce\FrameSf\Log\StartSingletonLogger::getInstance();
-$instance->setLogger($logger);
 
 try {
 

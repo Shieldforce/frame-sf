@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Log;
+namespace Shieldforce\FrameSf\Log;
 
-use App\Enums\ChannelsLogsEnum;
+use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
 use Shieldforce\FrameSf\Errors\Logs\SaveLogsErrors;
 
 class LogCustomImplement

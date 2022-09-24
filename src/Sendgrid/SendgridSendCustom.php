@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Shieldforce\FrameSf\Sendgrid;
 
-use App\Enums\ChannelsLogsEnum;
+use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
 
 class SendgridSendCustom
 {
@@ -37,7 +37,7 @@ class SendgridSendCustom
         $sendgrid = new \SendGrid(getenv('SENDGRID_API_KEY'));
         $response = $sendgrid->send($email);
         if($response->statusCode() != 202) {
-            \App\Services\Log\LogCustomImplement::error(
+            \Shieldforce\FrameSf\Log\LogCustomImplement::error(
                 ChannelsLogsEnum::LogExternalPackage,
                 "Problemas em enviar e-mail pelo sendgrid!",
                 [
