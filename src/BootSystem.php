@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace Shieldforce\FrameSf;
 
+use Monolog\Logger;
+use Shieldforce\FrameSf\Request\Request;
+
 class BootSystem
 {
-    public static function start()
+    protected Logger $logger;
+    protected Request $request;
+
+    public function start()
     {
-        register_tick_function('tick_handler')
+        $this->logger = getInstanceLogger();
+        $this->request = new Request();
     }
 }

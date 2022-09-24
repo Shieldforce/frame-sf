@@ -4,148 +4,122 @@ declare(strict_types=1);
 
 namespace Shieldforce\FrameSf\Errors\Logs;
 
-use Monolog\Handler\BrowserConsoleHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
 use Monolog\Logger;
 use Shieldforce\FrameSf\Sendgrid\SendgridSendCustom;
-use Throwable;
 
 class SaveLogsErrors
 {
-    private Throwable $exception;
     private Logger $logger;
-    private $errorInArray;
+    private array $toArray;
 
-    public function __construct(Throwable $exception, $channel = "web")
+    public function logger(Logger $logger, array $toArray) : void
     {
-        $this->exception = $exception;
-        $this->logger = new Logger($channel);
-        $this->errorInArray = $this->errorInArray();
-        $this->initHandlers();
+        $this->logger = $logger;
+        $this->toArray = $toArray;
     }
 
-    private function initHandlers()
-    {
-        $this->logger->pushHandler(new BrowserConsoleHandler(Level::Debug));
-        $this->logger->pushHandler(new StreamHandler("../logs/frame-sf/logs.txt", Level::Warning));
-    }
-
-    public function debug($message=null, $exception=null, $mail = false)
+    public function debug(string $message, array $content, bool $mail = false) : void
     {
         $this->logger->debug(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    public function info($message=null, $exception=null, $mail = false)
+    public function info(string $message, array $content, bool $mail = false) : void
     {
         $this->logger->info(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    public function notice($message=null, $exception=null, $mail = false)
+    public function notice(string $message, array $content, bool $mail = false) : void
     {
         $this->logger->notice(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    public function warning($message=null, $exception=null, $mail = false)
+    public function warning(string $message, array $content, bool $mail = false) : void
     {
         $this->logger->warning(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    public function error($message=null, $exception=null, $mail = false)
+    public function error(string $message, array $content, bool $mail = false) : void
     {
         $this->logger->error(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    public function critical($message=null, $exception=null, $mail = true)
+    public function critical(string $message, array $content, bool $mail = true) : void
     {
         $this->logger->critical(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    public function alert($message=null, $exception=null, $mail = true)
+    public function alert(string $message, array $content, bool $mail = true) : void
     {
         $this->logger->alert(
-            $message ?? $this->errorInArray["message"],
-            $exception ?? $this->errorInArray
+            $message,
+            $content
         );
         if($mail) {
-            $this->sendMail(__FUNCTION__);
+            $this->sendMail(__FUNCTION__, $content);
         }
     }
 
-    private function errorInArray()
+    private function sendMail($level, array $content)
     {
-        $exception                = $this->exception;
-        $array                    = [];
-        $array["message"]         = $exception->getMessage();
-        $array["code"]            = $exception->getCode();
-        $array["file"]            = $exception->getFile();
-        $array["line"]            = $exception->getLine();
-        $array["previous"]        = $exception->getPrevious();
-        $array["trace"]           = $exception->getTrace();
-        $array["trace_as_string"] = $exception->getTraceAsString();
-        return $array;
-    }
-
-    private function sendMail($level)
-    {
-        $send = new SendgridSendCustom();
-        $send->addTo("shieldforce2@gmail.com", "Alexandre Ferreira");
-        $send->addContent("<div style='text-align: center;padding: 5px;background: #cecece;color: red;'>");
-        $send->addContent("<h1>Erro level: (<span style='color: darkred;'>{$level}</span>) na aplicação!</h1>");
-        $send->addContent("</div>");
+        $send = new SendgridSendCustom($this->logger);
+        foreach ($this->toArray as $to) {
+            $send->addTo($to["mail"], $to["name"]);
+        }
+        $send->addContent("<div style='text-align: center;padding-top: 0;background: #cecece;color: black;'>");
+        $send->addContent("<h1 style='background: #606060;color: white;'>Log level: (<span style='color: darkred;'>{$level}</span>) na aplicação!</h1>");
         $send->addContent("<div style='text-align: left;'>");
         $send->addContent("<ul>");
-        $errors = $this->errorInArray();
-        $send->addContent("<li>Código: {$errors['code']}</li>");
-        $send->addContent("<li>Messagem: {$errors['message']}</li>");
-        $send->addContent("<li>Arquivo: {$errors['file']}</li>");
-        $send->addContent("<li>Linha: {$errors['line']}</li>");
-        $send->addContent("<li>Prévia: {$errors['previous']}</li>");
-        if(isset($errors['trace']) && count($errors['trace']) > 0) {
-            $send->addContent("<li>Aruivos Relacionados: ");
-            $send->addContent("<ul>");
-            foreach ($errors['trace'] as $trace) {
-                $send->addContent("<li>Arquivo: {$trace["file"]} | Linha: {$trace["line"]}</li>");
+        foreach ($content as $index => $cont) {
+            if(is_string($cont)) {
+                $send->addContent("<li>[{$index}] -- {$cont}</li>");
             }
-            $send->addContent("</ul>");
-            $send->addContent("</li>");
-            $send->addContent("<li>Aruivos Relacionados em texto: {$errors['trace_as_string']}</li>");
+            if (is_array($cont)) {
+                $send->addContent("<ul>");
+                foreach ($cont as $index2 => $c) {
+                    foreach ($c as $index3 => $cb) {
+                        if(is_string($cb)) {
+                            $send->addContent("<li>[{$index3}] -- {$cb}</li>");
+                        }
+                    }
+                }
+                $send->addContent("</ul>");
+            }
         }
         $send->addContent("</ul>");
         $send->addContent("</div>");

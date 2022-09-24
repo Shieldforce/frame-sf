@@ -2,8 +2,12 @@
     "name": "shieldforce/frame-sf",
     "autoload": {
         "psr-4": {
-            "Shieldforce\\FrameSf\\": "src/"
-        }
+            "Shieldforce\\FrameSf\\": "src/",
+            "App\\": "app/"
+        },
+        "files": [
+            "src/Helpers/functions.php"
+        ]
     },
     "authors": [
         {
