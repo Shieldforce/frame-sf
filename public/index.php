@@ -2,6 +2,7 @@
 
 use Dotenv\Dotenv;
 use Shieldforce\FrameSf\BootSystem;
+use Shieldforce\FrameSf\Errors\Custom\SendgridSendException;
 use Shieldforce\FrameSf\Errors\Logs\SaveLogsErrors;
 
 /**
@@ -39,5 +40,7 @@ try {
     BootSystem::start();
 
 } catch (\Throwable $exception) {
-    SaveLogsErrors::execute($exception);
+
+    $saveLog = new SaveLogsErrors($exception, "BootSystem");
+    $saveLog->error(null, null, true);
 }

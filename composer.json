@@ -12,6 +12,9 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "monolog/monolog": "3.2.0",
+        "sendgrid/sendgrid": "~7",
+        "ext-curl": "*"
     }
 }

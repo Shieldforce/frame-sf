@@ -8,6 +8,6 @@ class BootSystem
 {
     public static function start()
     {
-        register_tick_function('tick_handler');
+        register_tick_function('tick_handler')
     }
 }
