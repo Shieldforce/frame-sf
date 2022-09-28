@@ -1,14 +1,14 @@
 <?php
 
 $route = \Shieldforce\FrameSf\Router\Route::getInstance();
-$controller = new \App\modules\ExampleModule\controllers\ExternalController();
+$controller = new \App\modules\ExampleModule\controllers\Home\MainController();
 
 $route->get(
     __FILE__,
     "/",
     $controller,
     "index",
-    "home.index",
+    "home.index"
 );
 
 $route->get(

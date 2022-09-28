@@ -1,10 +1,10 @@
 <?php
 
-namespace App\modules\ExampleModule\controllers;
+namespace App\modules\ExampleModule\controllers\Home;
 
 use Shieldforce\FrameSf\Controllers\Abstracts\AbstractController;
 
-class ExternalController extends AbstractController
+class MainController extends AbstractController
 {
     public function index()
     {
