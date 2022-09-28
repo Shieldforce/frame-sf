@@ -10,4 +10,5 @@ enum ChannelsLogsEnum : string
     case LogInternalHelpersCore  = "LogInternalHelpersCore";
     case LogInternalMethodCore  = "LogInternalMethodCore";
     case LogInternalRouteCore  = "LogInternalRouteCore";
+    case LogInternalPageNotFoundCore  = "LogInternalPageNotFoundCore";
 }

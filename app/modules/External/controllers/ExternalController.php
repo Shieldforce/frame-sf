@@ -6,14 +6,14 @@ use Shieldforce\FrameSf\Controllers\Abstracts\AbstractController;
 
 class ExternalController extends AbstractController
 {
-    public function list()
+    public function index()
     {
-        echo "list";
+        return view($this, "index");
     }
 
     public function show()
     {
-        return view($this, "teste", ["nome" => "Alexandre", "idade" => 40]);
+        return view($this, "show", ["nome" => "Alexandre", "idade" => 40]);
     }
 
 }

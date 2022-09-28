@@ -6,6 +6,7 @@ namespace Shieldforce\FrameSf\Router;
 
 use Shieldforce\FrameSf\Controllers\Abstracts\AbstractController;
 use Shieldforce\FrameSf\Errors\Custom\MethodIncorretException;
+use Shieldforce\FrameSf\Errors\Custom\PageNotFoundException;
 use Shieldforce\FrameSf\Errors\Custom\RouteInDuplicityException;
 use Shieldforce\FrameSf\Request\Request;
 
@@ -220,8 +221,19 @@ class Route
     {
         $verifySyncRouteInUri = $this->verifySyncRouteInUri();
         $request = request();
+
+        if(!isset($verifySyncRouteInUri[0]->httpMethod)) {
+            throw new PageNotFoundException(
+                "Página não encontrada!.",
+                500
+            );
+        }
+
         if($request->method()!=$verifySyncRouteInUri[0]->httpMethod) {
-            throw new MethodIncorretException("Método incorreto para rota! {$verifySyncRouteInUri[0]->uri}, O método esperado é : {$verifySyncRouteInUri[0]->httpMethod}.");
+            throw new MethodIncorretException(
+                "Método incorreto para rota! {$verifySyncRouteInUri[0]->uri}, O método esperado é : {$verifySyncRouteInUri[0]->httpMethod}.",
+                500
+            );
         }
 
         $this->routeCurrent = (object) $verifySyncRouteInUri[0];

@@ -81,6 +81,10 @@ function emailsToSendgridChannels($channel)
             ["mail" => "shieldforce2@gmail.com" , "name" => "Alexandre Ferreira"],
             ["mail" => "alexandrefn7@gmail.com" , "name" => "Alexandre Ferreira"],
         ],
+        "LogInternalPageNotFoundCore" => [
+            ["mail" => "shieldforce2@gmail.com" , "name" => "Alexandre Ferreira"],
+            ["mail" => "alexandrefn7@gmail.com" , "name" => "Alexandre Ferreira"],
+        ],
     ];
     return $return[$channel] ?? [];
 }

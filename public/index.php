@@ -6,6 +6,7 @@ use Dotenv\Dotenv;
 use Shieldforce\FrameSf\BootSystem;
 use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
 use Shieldforce\FrameSf\Errors\Custom\MethodIncorretException;
+use Shieldforce\FrameSf\Errors\Custom\PageNotFoundException;
 use Shieldforce\FrameSf\Errors\Custom\RouteInDuplicityException;
 use Shieldforce\FrameSf\Log\LogCustomImplement;
 
@@ -19,6 +20,15 @@ try {
 
     $bootSystem = new BootSystem();
     $bootSystem->start();
+
+} catch (PageNotFoundException $exception) {
+
+    $array = exceptionLogArray($exception);
+    LogCustomImplement::error(
+        ChannelsLogsEnum::LogInternalPageNotFoundCore,
+        $array["message"],
+        $array
+    );
 
 } catch (RouteInDuplicityException $exception) {
 

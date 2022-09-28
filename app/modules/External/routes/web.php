@@ -4,10 +4,10 @@ $route = \Shieldforce\FrameSf\Router\Route::getInstance();
 
 $route->get(
     __FILE__,
-    "/list/{id}/{teste}",
+    "/",
     new \App\modules\External\controllers\ExternalController(),
-    "list",
-    "list",
+    "index",
+    "index",
 );
 
 $route->get(
