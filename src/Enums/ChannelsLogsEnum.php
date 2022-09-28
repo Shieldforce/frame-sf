@@ -8,4 +8,6 @@ enum ChannelsLogsEnum : string
     case LogInternalReneric      = "LogInternalReneric";
     case LogExternalPackage      = "LogExternalPackage";
     case LogInternalHelpersCore  = "LogInternalHelpersCore";
+    case LogInternalMethodCore  = "LogInternalMethodCore";
+    case LogInternalRouteCore  = "LogInternalRouteCore";
 }

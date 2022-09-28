@@ -4,13 +4,23 @@ declare(strict_types=1);
 
 namespace Shieldforce\FrameSf;
 
-use Shieldforce\FrameSf\Request\Request;
+use Shieldforce\FrameSf\Modules\CaptureModules;
+use Shieldforce\FrameSf\Router\ManipulationFilesAndDir;
 
 class BootSystem
 {
     public function start()
     {
-        $request = Request::getInstance();
-        dd($request->all(), __FILE__, __LINE__);
+        $manipulationFilesAndDir = new ManipulationFilesAndDir();
+        $manipulationFilesAndDir::readRoutes("../app/modules/");
+        $route = \Shieldforce\FrameSf\Router\Route::getInstance();
+        $captureModules = new CaptureModules();
+        $captureModules::addModule($manipulationFilesAndDir->getPathAccepts());
+        $route->setModules($captureModules->getModules());
+        $route->setCurrentRoute();
+        $controller = $route->getCurrentRoute()->controller;
+        $method = $route->getCurrentRoute()->method;
+        request()->setCurrentRoute($route);
+        return $controller->{$method}();
     }
 }

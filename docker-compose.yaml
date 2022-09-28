@@ -2,7 +2,7 @@ version: "3"
 services:
   php:
     build: .
-    container_name: "apache-srv"
+    container_name: "apache-frame-sf"
     image: server-apache
     volumes:
       - .docker/apache/server.pem:/etc/ssl/certs/server.pem
@@ -10,7 +10,7 @@ services:
       - .docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
       - .:/var/www/html
     ports:
-      - 8097:80
+      - 8888:80
       - 4437:443
     restart: always
     networks:

@@ -5,6 +5,26 @@ declare(strict_types=1);
 use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
 use Shieldforce\FrameSf\Log\LogCustomImplement;
 
+function config()
+{
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    ini_set('error_reporting', E_ALL);
+    error_reporting(E_ALL);
+
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', '-1');
+    date_default_timezone_set("America/Sao_Paulo");
+    if(getenv("APP_ENV")=="local")
+    {
+        setlocale(LC_TIME, 'ptb.UTF-8');
+    }
+    if(getenv("APP_ENV")=="production")
+    {
+        setlocale(LC_TIME, 'pt_BR.utf8');
+    }
+}
+
 set_error_handler('warning_handler', E_WARNING);
 function warning_handler($code, $message, $file, $line)
 {
@@ -53,8 +73,16 @@ function emailsToSendgridChannels($channel)
             ["mail" => "shieldforce2@gmail.com" , "name" => "Alexandre Ferreira"],
             ["mail" => "alexandrefn7@gmail.com" , "name" => "Alexandre Ferreira"],
         ],
+        "LogInternalMethodCore" => [
+            ["mail" => "shieldforce2@gmail.com" , "name" => "Alexandre Ferreira"],
+            ["mail" => "alexandrefn7@gmail.com" , "name" => "Alexandre Ferreira"],
+        ],
+        "LogInternalRouteCore" => [
+            ["mail" => "shieldforce2@gmail.com" , "name" => "Alexandre Ferreira"],
+            ["mail" => "alexandrefn7@gmail.com" , "name" => "Alexandre Ferreira"],
+        ],
     ];
-    return $return[$channel];
+    return $return[$channel] ?? [];
 }
 
 function getInstanceLogger() : \Monolog\Logger
@@ -102,6 +130,7 @@ function dd($content, $__FILE__, $__LINE__)
     echo "<div style='width: 10%;float: left;position: relative;'><span style='font-size: 12pt;color: greenyellow;text-align: right;'>Usuário: <span style='color: red;'>-</span></span></div>";
     echo "</div>";
     echo "</pre>";
+    die;
 }
 
 function getOS()
@@ -162,5 +191,15 @@ function getBrowser() {
         }
     }
     return $browser;
+}
+
+function request()
+{
+    return \Shieldforce\FrameSf\Request\Request::getInstance();
+}
+
+function view(\Shieldforce\FrameSf\Controllers\Abstracts\AbstractController $controller, string $name, array $variables = [])
+{
+    return \Shieldforce\FrameSf\Views\View::toReceivePathAndReturnContentFile($controller, $name, $variables);
 }
 

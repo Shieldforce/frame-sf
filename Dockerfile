@@ -63,3 +63,5 @@ RUN a2enmod ssl
 
 EXPOSE 80
 EXPOSE 443
+
+CMD ["chmod", "-R", "777", "logs/"]
