@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $route = \Shieldforce\FrameSf\Router\Route::getInstance();
 $controller = new \App\modules\ExampleModule\controllers\Panel\MainController();
 
@@ -8,5 +10,6 @@ $route->get(
     "/dashboard",
     $controller,
     "dashboard",
-    "panel.dashboard"
+    "panel.dashboard",
+    ["auth"]
 );

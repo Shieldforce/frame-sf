@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Shieldforce\FrameSf;
 
+use Shieldforce\FrameSf\Middlewares\MiddlewareKernel;
 use Shieldforce\FrameSf\Modules\CaptureModules;
 use Shieldforce\FrameSf\Router\ManipulationFilesAndDir;
 
@@ -21,6 +22,7 @@ class BootSystem
         $controller = $route->getCurrentRoute()->controller;
         $method = $route->getCurrentRoute()->method;
         request()->setCurrentRoute($route);
+        MiddlewareKernel::init($route);
         return $controller->{$method}();
     }
 }

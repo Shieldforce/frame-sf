@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\modules\ExampleModule\controllers\Home;
 
 use Shieldforce\FrameSf\Controllers\Abstracts\AbstractController;

@@ -19,6 +19,7 @@
         "vlucas/phpdotenv": "^5.4",
         "monolog/monolog": "3.2.0",
         "sendgrid/sendgrid": "~7",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-pdo": "*"
     }
 }

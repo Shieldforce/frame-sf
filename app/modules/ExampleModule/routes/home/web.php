@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $route = \Shieldforce\FrameSf\Router\Route::getInstance();
 $controller = new \App\modules\ExampleModule\controllers\Home\MainController();
 

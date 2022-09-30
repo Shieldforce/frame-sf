@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Shieldforce\FrameSf\Enums\ChannelsLogsEnum;
 use Shieldforce\FrameSf\Log\LogCustomImplement;
 
-function config()
+function config_init()
 {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -95,7 +95,7 @@ function getInstanceLogger() : \Monolog\Logger
     return $instance->getLogger();
 }
 
-function dd($content, $__FILE__, $__LINE__)
+function dd($content, $__FILE__=__FILE__, $__LINE__=__LINE__)
 {
     $content = json_encode($content, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
     $content = str_replace([
@@ -205,5 +205,15 @@ function request()
 function view(\Shieldforce\FrameSf\Controllers\Abstracts\AbstractController $controller, string $name, array $variables = [])
 {
     return \Shieldforce\FrameSf\Views\View::toReceivePathAndReturnContentFile($controller, $name, $variables);
+}
+
+function config($scope)
+{
+    $array = \Shieldforce\FrameSf\ManipulationFilesAndDirs\ManipulationFilesAndDirReturnArray::read("../config");
+    $arrayFilesRequire = [];
+    foreach ($array as $file) {
+        $arrayFilesRequire[str_replace([".php"], [""], $file["nameFile"])] = require($file["pathFile"]);
+    }
+    return (object) $arrayFilesRequire[$scope];
 }
 

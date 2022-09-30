@@ -12,7 +12,7 @@ use Shieldforce\FrameSf\Log\LogCustomImplement;
 
 require "../vendor/autoload.php";
 
-config();
+config_init();
 
 try {
 

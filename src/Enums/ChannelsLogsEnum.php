@@ -11,4 +11,5 @@ enum ChannelsLogsEnum : string
     case LogInternalMethodCore  = "LogInternalMethodCore";
     case LogInternalRouteCore  = "LogInternalRouteCore";
     case LogInternalPageNotFoundCore  = "LogInternalPageNotFoundCore";
+    case PDOExceptionCore  = "PDOExceptionCore";
 }

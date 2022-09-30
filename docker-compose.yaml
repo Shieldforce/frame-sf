@@ -1,8 +1,9 @@
 version: "3"
 services:
   php:
+    # build: .docker/php
     build: .
-    container_name: "apache-frame-sf"
+    container_name: "apache-srv"
     image: server-apache
     volumes:
       - .docker/apache/server.pem:/etc/ssl/certs/server.pem
@@ -11,7 +12,39 @@ services:
       - .:/var/www/html
     ports:
       - 8888:80
-      - 4437:443
+      - 4431:443
+    restart: always
+    networks:
+      - mynetwork
+
+  mysql:
+    image: mysql:5.7.26
+    container_name: "mysql-srv"
+    volumes:
+      - sesc_db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: "api_sesc"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+    restart: always
+    networks:
+      - mynetwork
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: "phpmyadmin-srv"
+    ports:
+      - 8992:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    links:
+      - mysql
     restart: always
     networks:
       - mynetwork
@@ -19,3 +52,8 @@ services:
 networks:
   mynetwork:
     driver: bridge
+
+volumes:
+  sesc_db:
+    driver: local
+
